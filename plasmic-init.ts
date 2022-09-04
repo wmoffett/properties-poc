@@ -25,8 +25,8 @@ export const PLASMIC = initPlasmicLoader({
 
 // PLASMIC.registerComponent(...);
 
-PLASMIC.registerComponent(PropertyField, {
-  name: "PropertyField",
+PLASMIC.registerComponent(PropertyFetcher, {
+  name: "PropertyFetcher",
   props: {
     stateUrl: {
       type: "string",
