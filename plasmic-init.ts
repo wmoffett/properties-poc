@@ -1,5 +1,6 @@
 import { initPlasmicLoader } from "@plasmicapp/loader-nextjs";
 
+import { PropertyFetcher, PropertyField } from "@components/property/property";
 export const PLASMIC = initPlasmicLoader({
   projects: [
     {
@@ -23,3 +24,47 @@ export const PLASMIC = initPlasmicLoader({
 // https://docs.plasmic.app/learn/app-hosting/#set-a-plasmic-project-to-use-your-app-host
 
 // PLASMIC.registerComponent(...);
+
+PLASMIC.registerComponent(PropertyField, {
+  name: "PropertyField",
+  props: {
+    stateUrl: {
+      type: "string",
+      defaultValue: "south-carolina",
+      options: ["south-carolina"],
+    },
+    cityUrl: {
+      type: "string",
+      defaultValue: "charleston",
+      options: ["charleston", "hilton-head-island"],
+    },
+    propertyUrl: {
+      type: "string",
+      defaultValue: "oaks-at-charleston",
+      options: ["oaks-at-charleston", "the-bayshore-on-hilton-head-island"],
+    },
+    children: {
+      type: "slot",
+      defaultValue: {
+        type: "vbox",
+        children: [
+          {
+            type: "component",
+            name: "PropertyField",
+          },
+        ],
+      },
+    },
+  },
+  providesData: true
+});
+
+PLASMIC.registerComponent(PropertyField, {
+  name: "PropertyField",
+  props: {
+    path: {
+      type: "choice",
+      options: (props, ctx) => ctx.fields,
+    },
+  },
+});
