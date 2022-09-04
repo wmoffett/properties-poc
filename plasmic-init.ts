@@ -5,6 +5,11 @@ import {
   PropertyField 
 } from "@components/property/property";
 
+import { 
+  StarsReview,
+  StarsReviewMeta
+ } from "@components/StarsReview";
+
 import { Footer } from "@components/Footer";
 
 export const PLASMIC = initPlasmicLoader({
@@ -75,7 +80,12 @@ PLASMIC.registerComponent(PropertyField, {
   },
 });
 
-//////////
+////////// Presentation Components
+
+PLASMIC.registerComponent(
+  StarsReview,
+  StarsReviewMeta
+);
 
 PLASMIC.registerComponent(Footer, {
   name: "Footer",
