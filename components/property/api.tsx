@@ -2,6 +2,9 @@ process.env.CONTENTFUL_SPACE_ID = "o80oqw32rhmg";
 process.env.CONTENTFUL_ACCESS_TOKEN =
   "Kv--4rISSalKyJLXuUL8bPKb950cDc52FSfrPHCPu6Y";
 
+
+process.env.CONTENTFUL_PREVIEW_ACCESS_TOKEN = "Kv--4rISSalKyJLXuUL8bPKb950cDc52FSfrPHCPu6Y";
+
 const POST_GRAPHQL_FIELDS = `
 id
 name
@@ -13,7 +16,6 @@ state
 stateUrl
 stateCode
 propertyUrl
-title
 description {
   json
   links {
@@ -57,6 +59,11 @@ propertyUrl
 `;
 
 async function fetchGraphQL(query: string, preview = false) {
+
+
+  console.log('token', preview
+  ? process.env.CONTENTFUL_PREVIEW_ACCESS_TOKEN
+  : process.env.CONTENTFUL_ACCESS_TOKEN )
   return fetch(
     `https://graphql.contentful.com/content/v1/spaces/${process.env.CONTENTFUL_SPACE_ID}`,
     {
