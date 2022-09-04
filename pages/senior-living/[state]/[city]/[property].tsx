@@ -10,8 +10,6 @@ import { ParsedUrlQuery } from "querystring";
 import { PLASMIC } from "~/plasmic-init";
 import { ChakraProvider } from '@chakra-ui/react'
 import theme from '@styles/theme';
-
-
 import { getAllProperties } from "@components/property/api";
 
 interface PropertyParams extends ParsedUrlQuery {
@@ -19,11 +17,10 @@ interface PropertyParams extends ParsedUrlQuery {
   city: string;
   property: string;
 }
-
 interface Property {
-  state: string;
-  city: string;
-  property: string;
+  stateUrl: string;
+  cityUrl: string;
+  propertyUrl: string;
 }
 
 interface PropertyPageProps {
@@ -42,9 +39,9 @@ export const getStaticPaths: GetStaticPaths<PropertyParams> = async () => {
   return {
     paths: properties.map((p) => ({
       params: { 
-        state: p.state,
-        city: p.city,
-        property: p.property
+        state: p.stateUrl,
+        city: p.cityUrl,
+        property: p.propertyUrl
       },
     })),
     fallback: false,
