@@ -10,6 +10,9 @@ import type { GetStaticPaths, GetStaticProps } from "next";
 import Error from "next/error";
 import { useRouter } from "next/router";
 import { PLASMIC } from "../plasmic-init";
+import { ChakraProvider } from '@chakra-ui/react'
+import theme from '@styles/theme';
+
 
 export default function PlasmicLoaderPage(props: {
   plasmicData?: ComponentRenderData;
@@ -22,15 +25,17 @@ export default function PlasmicLoaderPage(props: {
   }
   const pageMeta = plasmicData.entryCompMetas[0];
   return (
-    <PlasmicRootProvider
-      loader={PLASMIC}
-      prefetchedData={plasmicData}
-      prefetchedQueryData={queryCache}
-      pageParams={pageMeta.params}
-      pageQuery={router.query}
-    >
-      <PlasmicComponent component={pageMeta.displayName} />
-    </PlasmicRootProvider>
+    <ChakraProvider theme={theme}>
+      <PlasmicRootProvider
+        loader={PLASMIC}
+        prefetchedData={plasmicData}
+        prefetchedQueryData={queryCache}
+        pageParams={pageMeta.params}
+        pageQuery={router.query}
+      >
+        <PlasmicComponent component={pageMeta.displayName} />
+      </PlasmicRootProvider>
+    </ChakraProvider>
   );
 }
 
@@ -45,13 +50,15 @@ export const getStaticProps: GetStaticProps = async (context) => {
   const pageMeta = plasmicData.entryCompMetas[0];
   // Cache the necessary data fetched for the page
   const queryCache = await extractPlasmicQueryData(
-    <PlasmicRootProvider
-      loader={PLASMIC}
-      prefetchedData={plasmicData}
-      pageParams={pageMeta.params}
-    >
-      <PlasmicComponent component={pageMeta.displayName} />
-    </PlasmicRootProvider>
+    <ChakraProvider theme={theme}>
+      <PlasmicRootProvider
+        loader={PLASMIC}
+        prefetchedData={plasmicData}
+        pageParams={pageMeta.params}
+      >
+        <PlasmicComponent component={pageMeta.displayName} />
+      </PlasmicRootProvider>
+    </ChakraProvider>
   );
   // Use revalidate if you want incremental static regeneration
   return { props: { plasmicData, queryCache }, revalidate: 60 };
