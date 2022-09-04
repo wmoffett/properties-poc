@@ -63,9 +63,9 @@ propertyUrl
 async function fetchGraphQL(query: string, preview = false) {
 
 
-  console.log('token', preview
-  ? process.env.CONTENTFUL_PREVIEW_ACCESS_TOKEN
-  : process.env.CONTENTFUL_ACCESS_TOKEN )
+  // console.log('token', preview
+  // ? process.env.CONTENTFUL_PREVIEW_ACCESS_TOKEN
+  // : process.env.CONTENTFUL_ACCESS_TOKEN )
   return fetch(
     `https://graphql.contentful.com/content/v1/spaces/${process.env.CONTENTFUL_SPACE_ID}`,
     {
@@ -84,6 +84,9 @@ async function fetchGraphQL(query: string, preview = false) {
 }
 
 function extractPostEntries(fetchResponse: any) {
+
+  console.log('getAllProperties length', fetchResponse?.data?.propertiesCollection?.items.length);
+
   return fetchResponse?.data?.propertiesCollection?.items;
 }
 
@@ -145,26 +148,6 @@ export async function getAllProperties(){
 //   return extractPostEntries(entries);
 // }
 
-
-// export async function getPreviewPostBySlug(slug: string | string[] | undefined) {
-
-
-//   if (typeof slug !='string') {
-//     return;
-//   }
-
-//   console.log('we have slug:', slug);
-//   const entry = await fetchGraphQL(
-//     `query {
-//       blogPostCollection(where: { slug: "${slug}" }, preview: false, limit: 1) {
-//         items {
-//           ${POST_GRAPHQL_FIELDS}
-//         }
-//       }
-//     }`
-//   );
-//   return extractPostEntries(entry);
-// }
 
 
 export async function getProperty(stateUrl: string | undefined, cityUrl: string | undefined, propertyUrl: string | undefined) {
@@ -244,35 +227,3 @@ export async function getProperty(stateUrl: string | undefined, cityUrl: string 
   );
   return extractPostEntries(entry);
 }
-
-
-// export async function getPostAndMorePosts(slug: string, preview: boolean) {
-//   const entry = await fetchGraphQL(
-//     `query {
-//       blogPostCollection(where: { slug: "${slug}" }, preview: ${
-//       preview ? "true" : "false"
-//     }, limit: 1) {
-//         items {
-//           ${POST_GRAPHQL_FIELDS}
-//         }
-//       }
-//     }`,
-//     preview
-//   );
-//   const entries = await fetchGraphQL(
-//     `query {
-//       blogPostCollection(where: { slug_not_in: "${slug}" }, order: date_DESC, preview: ${
-//       preview ? "true" : "false"
-//     }, limit: 2) {
-//         items {
-//           ${POST_GRAPHQL_FIELDS}
-//         }
-//       }
-//     }`,
-//     preview
-//   );
-//   return {
-//     post: extractPost(entry),
-//     morePosts: extractPostEntries(entries),
-//   };
-// }

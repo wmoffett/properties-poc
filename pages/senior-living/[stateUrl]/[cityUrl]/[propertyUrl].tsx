@@ -13,9 +13,9 @@ import theme from '@styles/theme';
 import { getAllProperties } from "@components/property/api";
 
 interface PropertyParams extends ParsedUrlQuery {
-  state: string;
-  city: string;
-  property: string;
+  stateUrl: string;
+  cityUrl: string;
+  propertyUrl: string;
 }
 interface Property {
   stateUrl: string;
@@ -26,49 +26,49 @@ interface Property {
 interface PropertyPageProps {
   plasmicData: ComponentRenderData;
   queryCache: Record<string, any>;
-  state: string;
-  city: string;
-  property: string;
+  stateUrl: string;
+  cityUrl: string;
+  propertyUrl: string;
 }
 
 export const getStaticPaths: GetStaticPaths<PropertyParams> = async () => {
   const properties: Property[] = (
     await getAllProperties()
   );
-  
+
   return {
     paths: properties.map((p) => ({
       params: { 
-        state: p.stateUrl,
-        city: p.cityUrl,
-        property: p.propertyUrl
+        stateUrl: p.stateUrl,
+        cityUrl: p.cityUrl,
+        propertyUrl: p.propertyUrl
       },
     })),
     fallback: false,
   };
 };
 
-const pagePath = "/senior-living/[state]/[city]/[property]";
+const pagePath = "/senior-living/[stateUrl]/[cityUrl]/[propertyUrl]";
 
 export const getStaticProps: GetStaticProps<
   PropertyPageProps,
   PropertyParams
 > = async (context) => {
 
-  const state = context.params?.state;
-  const city = context.params?.city;
-  const property = context.params?.property;
+  const stateUrl = context.params?.stateUrl;
+  const cityUrl = context.params?.cityUrl;
+  const propertyUrl = context.params?.propertyUrl;
 
-  if (!state) {
-    throw new Error("Missing state");
+  if (!stateUrl) {
+    throw new Error("Missing state Url");
   }
 
-  if (!city) {
-    throw new Error("Missing city");
+  if (!cityUrl) {
+    throw new Error("Missing city Url");
   }
 
-  if (!property) {
-    throw new Error("Missing property");
+  if (!propertyUrl) {
+    throw new Error("Missing property Url");
   }
 
   const plasmicData = await PLASMIC.fetchComponentData(pagePath);
@@ -84,9 +84,9 @@ export const getStaticProps: GetStaticProps<
           componentProps={{
             propertyFetcher:{
               props: {
-                state: state,
-                city: city,
-                property: property
+                stateUrl: stateUrl,
+                cityUrl: cityUrl,
+                propertyUrl: propertyUrl
               }
             }
           }}
@@ -95,15 +95,15 @@ export const getStaticProps: GetStaticProps<
     </ChakraProvider>
   );
 
-  return { props: { plasmicData, queryCache, city, state, property } };
+  return { props: { plasmicData, queryCache, cityUrl, stateUrl, propertyUrl } };
 };
 
 const PropertyPage: NextPage<PropertyPageProps> = ({
   plasmicData,
   queryCache,
-  state,
-  city,
-  property,
+  stateUrl,
+  cityUrl,
+  propertyUrl,
 }) => {
   return (
     <ChakraProvider theme={theme}>
@@ -117,9 +117,9 @@ const PropertyPage: NextPage<PropertyPageProps> = ({
           componentProps={{
             propertyFetcher:{
               props: {
-                state: state,
-                city: city,
-                property: property
+                stateUrl: stateUrl,
+                cityUrl: cityUrl,
+                propertyUrl: propertyUrl
               }
             }
           }}
