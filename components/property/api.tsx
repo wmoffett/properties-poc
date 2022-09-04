@@ -16,6 +16,8 @@ state
 stateUrl
 stateCode
 propertyUrl
+rollupType
+rollupTypeUrl
 description {
   json
   links {
