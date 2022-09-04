@@ -167,6 +167,56 @@ export async function getAllProperties(){
 
 export async function getProperty(stateUrl: string | undefined, cityUrl: string | undefined, propertyUrl: string | undefined) {
 
+  // query {  
+  //   propertiesCollection(where: { stateUrl: "south-carolina", cityUrl: "charleston" , propertyUrl: "oaks-at-charleston" }, preview: false, limit: 1) {
+  //         items {
+  //           id
+  //           name
+  //           address
+  //           zip
+  //           city
+  //           cityUrl
+  //           state
+  //           stateUrl
+  //           stateCode
+  //           propertyUrl
+  //           description {
+  //             json
+  //             links {
+  //               assets {
+  //                 __typename
+  //                 block {
+  //                   sys {
+  //                     id
+  //                   }
+  //                   __typename
+  //                   url
+  //                   title
+  //                   width
+  //                   height
+  //                   description
+  //                   fileName
+  //                   contentType
+  //                 }
+  //               }
+  //             }
+  //           }
+  //           rating
+  //           photo {
+  //             url
+  //             description
+  //           }
+  //           photo1 {
+  //             url
+  //             description
+  //           }
+  //           photo2 {
+  //             url
+  //             description
+  //           }
+  //         }
+  //   }
+  // }
 
   if (typeof stateUrl !='string') {
     return;
