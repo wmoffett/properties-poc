@@ -1,1 +1,0 @@
-self.__SSG_MANIFEST=new Set(["\u002F[[...catchall]]","\u002Fsenior-living\u002F[state]\u002F[city]\u002F[property]"]);self.__SSG_MANIFEST_CB&&self.__SSG_MANIFEST_CB()
