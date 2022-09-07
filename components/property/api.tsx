@@ -52,6 +52,19 @@ photo2 {
   url
   description
 }
+imagesCollection{
+  total
+  items{
+    fileName
+    url
+    title
+    description
+  }
+}
+map {
+  lat
+  lon
+}
 `;
 
 const POST_GRAPHQL_FIELDS_MINIMAL = `
