@@ -1,5 +1,5 @@
 import { 
-  // ComponentMeta,
+  ComponentMeta,
   DataProvider,
   // GlobalContextMeta, 
   repeatedElement, 
@@ -15,19 +15,111 @@ import {
 } from "@components/property/api";
 import documentToContent from '@components/renderDocument/documentToContent';
 
+
+
+
+// PLASMIC.registerComponent(PropertyFetcher, {
+//   name: "PropertyFetcher",
+//   props: {
+//     stateUrl: {
+//       type: "string",
+//       defaultValue: "south-carolina",
+//       options: ["south-carolina"],
+//     },
+//     cityUrl: {
+//       type: "string",
+//       defaultValue: "charleston",
+//       options: ["charleston", "hilton-head-island"],
+//     },
+//     propertyUrl: {
+//       type: "string",
+//       defaultValue: "oaks-at-charleston",
+//       options: ["oaks-at-charleston", "the-bayshore-on-hilton-head-island"],
+//     },
+//     children: {
+//       type: "slot",
+//       defaultValue: {
+//         type: "vbox",
+//         children: [
+//           {
+//             type: "component",
+//             name: "PropertyField",
+//           },
+//         ],
+//       },
+//     },
+//   },
+//   providesData: true
+// });
+
+// PLASMIC.registerComponent(PropertyField, {
+//   name: "PropertyField",
+//   props: {
+//     path: {
+//       type: "choice",
+//       options: (props, ctx) => ctx.fields,
+//     },
+//   },
+// });
+
+
+
+
+// export const FooterMeta: ComponentMeta<FooterProps> = {
+
+interface PropertyFetcherProps {
+  stateUrl?: string;
+  cityUrl?: string;
+  propertyUrl?: string;
+  children?: ReactNode;
+  className?: string;
+}
+
+export const PropertyFetcherMeta: ComponentMeta<PropertyFetcherProps> = {
+  name: "PropertyFetcher",
+  displayName: "Property Fetcher",
+  description: "Retrieve property data from GraphQL",
+  importName: "PropertyFetcher",
+  importPath: './components/property/',
+  props: {
+    stateUrl: {
+      type: "string",
+      defaultValue: "south-carolina",
+      options: ["south-carolina"],
+    },
+    cityUrl: {
+      type: "string",
+      defaultValue: "charleston",
+      options: ["charleston", "hilton-head-island"],
+    },
+    propertyUrl: {
+      type: "string",
+      defaultValue: "oaks-at-charleston",
+      options: ["oaks-at-charleston", "the-bayshore-on-hilton-head-island"],
+    },
+    children: {
+      type: "slot",
+      defaultValue: {
+        type: "vbox",
+        children: [
+          {
+            type: "component",
+            name: "PropertyField",
+          },
+        ],
+      },
+    },
+  },
+  providesData: true
+}
+
 export function PropertyFetcher({
   stateUrl,
   cityUrl,
   propertyUrl,
   children,
   className,
-}: {
-  stateUrl?: string;
-  cityUrl?: string;
-  propertyUrl?: string;
-  children?: ReactNode;
-  className?: string;
-}) {
+} : PropertyFetcherProps ) {
 
   const data = usePlasmicQueryData<any[] | null>(
     JSON.stringify({ stateUrl, cityUrl, propertyUrl }),
@@ -51,15 +143,43 @@ export function PropertyFetcher({
   );
 }
 
+// PLASMIC.registerComponent(PropertyField, {
+//   name: "PropertyField",
+//   props: {
+//     path: {
+//       type: "choice",
+//       options: (props, ctx) => ctx.fields,
+//     },
+//   },
+// });
+
+interface PropertyFieldProps {
+  className?: string;
+  path?: string;
+  setControlContextData: (data: any) => void;
+}
+
+export const PropertyFieldMeta: ComponentMeta<PropertyFieldProps> = {
+  name: "PropertyField",
+  displayName: "Property Field",
+  description: "Use to select a property field",
+  importName: "PropertyField",
+  importPath: './components/property/',
+  props: {
+    path: {
+      type: "choice",
+      options: (props, ctx) => ctx.fields,
+    },
+  },
+}
+
+
 export function PropertyField({
   className,
   path,
   setControlContextData,
-}: {
-  className?: string;
-  path?: string;
-  setControlContextData: (data: any) => void;
-}) {
+} : PropertyFieldProps ) {
+  
   const item = useSelector("propertyItem");
 
   if (!item) {
