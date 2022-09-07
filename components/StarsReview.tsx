@@ -1,14 +1,7 @@
 import React from "react";
 import { Box, Heading, Stack, VStack, HStack, Button, Icon, IconProps, Text } from "@chakra-ui/react";
 import { MdStar, MdStarHalf, MdStarOutline, MdEdit } from "react-icons/md";
-
-import { 
-  ComponentMeta,
-  // DataProvider,
-  // GlobalContextMeta, 
-  // repeatedElement, 
-  // useSelector 
-} from "@plasmicapp/host";
+import { ComponentMeta } from "@plasmicapp/host";
 
 export const pluralize = (
   count: number,
@@ -17,24 +10,6 @@ export const pluralize = (
 ): string => {
   if (count === 1) return word;
   return `${word}${suffix}`;
-};
-
-export const formatPhone = (str: string): string => {
-  if (str.startsWith("+1")) {
-    str = str.replace("+1", "");
-  }
-
-  //Filter only numbers from the input
-  const cleaned = ("" + str).replace(/\D/g, "");
-
-  //Check if the input is of correct length
-  const match = cleaned.match(/^(\d{3})(\d{3})(\d{4})$/);
-
-  if (match) {
-    return "(" + match[1] + ") " + match[2] + "-" + match[3];
-  }
-
-  return "";
 };
 
 interface StarsReviewProps {
@@ -69,12 +44,7 @@ export function StarsReview({
   rating,
   totalReviews,
   size
-
-}: {
-  rating: number;
-  totalReviews: number;
-  size?: IconProps["boxSize"];
-}) {
+} : StarsReviewProps) {
 
   // I saw this outside the component
   const ratingAdjustment = Math.round(rating * 10) / 10;
@@ -140,7 +110,7 @@ export function StarsReview({
         <Text color="gray.800" fontSize="lg">
           {totalReviews} {pluralize(totalReviews, "review")}
         </Text>
-        {/* {provider && <ProviderDetailsWriteAReviewLink provider={provider} />} */}
+        {/* { Simulate write a review button */}
         <Button
           title="Write a review"
           style={{ textDecoration: "none" }}
@@ -156,23 +126,6 @@ export function StarsReview({
     </Stack>
   );
 
-
-
-
-
-  return (
-    <HStack spacing="0.25">
-      {[...Array(ratingInteger)].map((_, i) => (
-        <Icon key={i} as={MdStar} boxSize="5" color="caringRed.400" />
-      ))}
-      <Text 
-        fontSize="sm"
-        aria-label={`${totalReviews} reviews`}
-      >
-        ({totalReviews})
-      </Text>
-    </HStack>
-  );
 };
 
 export default StarsReview;
