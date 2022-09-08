@@ -16,6 +16,7 @@ interface StarsReviewProps {
   rating: number;
   totalReviews: number;
   size?: IconProps["boxSize"];
+  className?: string;
 }
 
 export const StarsReviewMeta: ComponentMeta<StarsReviewProps> = {
@@ -43,7 +44,8 @@ export const StarsReviewMeta: ComponentMeta<StarsReviewProps> = {
 export function StarsReview({
   rating,
   totalReviews,
-  size
+  size,
+  className
 } : StarsReviewProps) {
 
   // I saw this outside the component
@@ -59,7 +61,7 @@ export function StarsReview({
   const emptyStars = 5 - fullStars - halfStar;
 
   return (
-    <Stack direction="row" color="caringRed.400" alignItems="center">
+    <Stack className={className} direction="row" color="caringRed.400" alignItems="center">
       <VStack align="start">
         <Heading
           as="p"

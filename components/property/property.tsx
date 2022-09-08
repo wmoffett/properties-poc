@@ -1,7 +1,6 @@
 import { 
   ComponentMeta,
   DataProvider,
-  // GlobalContextMeta, 
   repeatedElement, 
   useSelector 
 } from "@plasmicapp/host";
@@ -9,63 +8,155 @@ import { usePlasmicQueryData } from "@plasmicapp/query";
 import L from "lodash";
 import React, { ReactNode, useContext } from "react";
 import { 
-  getProperty
-  // getAllPostsForHome, 
-  // getPreviewPostBySlug 
+  getProperty,
+  getPropertiesByState,
+  getPropertiesByCity,
 } from "@components/property/api";
 import documentToContent from '@components/renderDocument/documentToContent';
 
 
+interface PropertyByStateProps {
+  stateUrl?: string;
+  limit?:number;
+  children?: ReactNode;
+  className?: string;
+}
 
+export const PropertyByStateFetcherMeta: ComponentMeta<PropertyByStateProps> = {
+  name: "PropertyByStateFetcher",
+  displayName: "Property By State Fetcher",
+  description: "Retrieve property data from GraphQL by state",
+  importName: "PropertyByStateFetcher",
+  importPath: './components/property/',
+  props: {
+    stateUrl: {
+      type: "string",
+      defaultValue: "south-carolina",
+      options: ["south-carolina"],
+    },
+    limit: {
+      type: "number",
+      defaultValue: 10,
+    },
+    children: {
+      type: "slot",
+      defaultValue: {
+        type: "vbox",
+        children: [
+          {
+            type: "component",
+            name: "PropertyField",
+          },
+        ],
+      },
+    },
+  },
+  providesData: true
+}
 
-// PLASMIC.registerComponent(PropertyFetcher, {
-//   name: "PropertyFetcher",
-//   props: {
-//     stateUrl: {
-//       type: "string",
-//       defaultValue: "south-carolina",
-//       options: ["south-carolina"],
-//     },
-//     cityUrl: {
-//       type: "string",
-//       defaultValue: "charleston",
-//       options: ["charleston", "hilton-head-island"],
-//     },
-//     propertyUrl: {
-//       type: "string",
-//       defaultValue: "oaks-at-charleston",
-//       options: ["oaks-at-charleston", "the-bayshore-on-hilton-head-island"],
-//     },
-//     children: {
-//       type: "slot",
-//       defaultValue: {
-//         type: "vbox",
-//         children: [
-//           {
-//             type: "component",
-//             name: "PropertyField",
-//           },
-//         ],
-//       },
-//     },
-//   },
-//   providesData: true
-// });
+export function PropertyByStateFetcher({
+  stateUrl,
+  limit,
+  children,
+  className,
+} : PropertyByStateProps ) {
 
-// PLASMIC.registerComponent(PropertyField, {
-//   name: "PropertyField",
-//   props: {
-//     path: {
-//       type: "choice",
-//       options: (props, ctx) => ctx.fields,
-//     },
-//   },
-// });
+  const data = usePlasmicQueryData<any[] | null>(
+    JSON.stringify({ stateUrl }),
+    async () => {
+      return getPropertiesByState(stateUrl, limit);
+    }
+  );
 
+  if (!data?.data) {
+    return <div>Could not find collection.</div>;
+  }
 
+  return (
+    <div className={className}>
+      {data?.data.map((item, index) => (
+        <DataProvider key={item.slug} name={"propertyItem"} data={item}>
+          {repeatedElement(index, children)}
+        </DataProvider>
+      ))}
+    </div>
+  );
+}
 
+interface PropertyByCityProps {
+  stateUrl?: string;
+  cityUrl?: string;
+  limit?:number;
+  children?: ReactNode;
+  className?: string;
+}
 
-// export const FooterMeta: ComponentMeta<FooterProps> = {
+export const PropertyByCityFetcherMeta: ComponentMeta<PropertyByCityProps> = {
+  name: "PropertyByCityFetcher",
+  displayName: "Property By City Fetcher",
+  description: "Retrieve property data from GraphQL by City",
+  importName: "PropertyByCityFetcher",
+  importPath: './components/property/',
+  props: {
+    stateUrl: {
+      type: "string",
+      defaultValue: "south-carolina",
+      options: ["south-carolina"],
+    },
+    cityUrl: {
+      type: "string",
+      defaultValue: "charleston",
+      options: ["charleston", "hilton-head-island"],
+    },
+    limit: {
+      type: "number",
+      defaultValue: 10,
+    },
+    children: {
+      type: "slot",
+      defaultValue: {
+        type: "vbox",
+        children: [
+          {
+            type: "component",
+            name: "PropertyField",
+          },
+        ],
+      },
+    },
+  },
+  providesData: true
+}
+
+export function PropertyByCityFetcher({
+  stateUrl,
+  cityUrl,
+  limit,
+  children,
+  className,
+} : PropertyByCityProps ) {
+
+  const data = usePlasmicQueryData<any[] | null>(
+    JSON.stringify({ stateUrl, cityUrl }),
+    async () => {
+      return getPropertiesByCity(stateUrl, cityUrl, limit);
+    }
+  );
+
+  if (!data?.data) {
+    return <div>Could not find collection.</div>;
+  }
+
+  return (
+    <div className={className}>
+      {data?.data.map((item, index) => (
+        <DataProvider key={item.slug} name={"propertyItem"} data={item}>
+          {repeatedElement(index, children)}
+        </DataProvider>
+      ))}
+    </div>
+  );
+}
 
 interface PropertyFetcherProps {
   stateUrl?: string;
@@ -135,23 +226,13 @@ export function PropertyFetcher({
   return (
     <div className={className}>
       {data?.data.map((item, index) => (
-        <DataProvider key={item.slug} name={"propertyItem"} data={item}>
+        <DataProvider key={item.id.toString()} name={"propertyItem"} data={item}>
           {repeatedElement(index, children)}
         </DataProvider>
       ))}
     </div>
   );
 }
-
-// PLASMIC.registerComponent(PropertyField, {
-//   name: "PropertyField",
-//   props: {
-//     path: {
-//       type: "choice",
-//       options: (props, ctx) => ctx.fields,
-//     },
-//   },
-// });
 
 interface PropertyFieldProps {
   className?: string;
@@ -172,7 +253,6 @@ export const PropertyFieldMeta: ComponentMeta<PropertyFieldProps> = {
     },
   },
 }
-
 
 export function PropertyField({
   className,

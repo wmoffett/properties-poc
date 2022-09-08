@@ -3,9 +3,20 @@ import { initPlasmicLoader } from "@plasmicapp/loader-nextjs";
 import { 
   PropertyFetcher, 
   PropertyFetcherMeta,
+  PropertyByStateFetcher,
+  PropertyByStateFetcherMeta,
+  PropertyByCityFetcher,
+  PropertyByCityFetcherMeta,
   PropertyField, 
   PropertyFieldMeta
 } from "@components/property/property";
+
+import { 
+  ContentFetcher,
+  ContentFetcherMeta,
+  ContentField,
+  ContentFieldMeta 
+} from "@components/content/content";
 
 import { 
   StarsReview,
@@ -44,9 +55,31 @@ PLASMIC.registerComponent(
   PropertyFetcherMeta
 );
 
+
+PLASMIC.registerComponent(
+  PropertyByStateFetcher,
+  PropertyByStateFetcherMeta
+);
+
+PLASMIC.registerComponent(
+  PropertyByCityFetcher,
+  PropertyByCityFetcherMeta
+);
+
 PLASMIC.registerComponent(
   PropertyField,
   PropertyFieldMeta
+);
+
+
+PLASMIC.registerComponent(
+  ContentFetcher,
+  ContentFetcherMeta
+);
+
+PLASMIC.registerComponent(
+  ContentField,
+  ContentFieldMeta
 );
 
 ////////// Presentation Components

@@ -1,8 +1,8 @@
 process.env.CONTENTFUL_SPACE_ID = "o80oqw32rhmg";
 process.env.CONTENTFUL_ACCESS_TOKEN =
   "Kv--4rISSalKyJLXuUL8bPKb950cDc52FSfrPHCPu6Y";
-process.env.CONTENTFUL_PREVIEW_ACCESS_TOKEN = 
-  "Kv--4rISSalKyJLXuUL8bPKb950cDc52FSfrPHCPu6Y";
+// process.env.CONTENTFUL_PREVIEW_ACCESS_TOKEN = 
+//   "Kv--4rISSalKyJLXuUL8bPKb950cDc52FSfrPHCPu6Y";
 
 const POST_GRAPHQL_FIELDS = `
 id
@@ -39,6 +39,7 @@ description {
   }
 }
 rating
+reviews
 photo {
   url
   description
@@ -92,16 +93,12 @@ async function fetchGraphQL(query: string, preview = false) {
 }
 
 function extractPostEntries(fetchResponse: any) {
-
-  console.log('getAllProperties length', fetchResponse?.data?.propertiesCollection?.items.length);
-
   return fetchResponse?.data?.propertiesCollection?.items;
 }
 
 function extractPost(fetchResponse: any) {
   return fetchResponse?.data?.propertiesCollection?.items?.[0];
 }
-
 
 export async function getAllProperties(){
 
@@ -115,6 +112,76 @@ export async function getAllProperties(){
     }`
   );
   return extractPostEntries(entries);
+}
+
+export async function getAllPropertiesByState(){
+
+  const entries = await fetchGraphQL(
+    `query {
+      propertiesCollection(where: { stateUrl_exists: true }, order: name_DESC) {
+        items {
+          ${POST_GRAPHQL_FIELDS_MINIMAL}
+        }
+      }
+    }`
+  );
+  return extractPostEntries(entries);
+}
+
+export async function getAllPropertiesByCity(){
+
+  const entries = await fetchGraphQL(
+    `query {
+      propertiesCollection(where: { stateUrl_exists: true, cityUrl_exists: true }, order: name_DESC) {
+        items {
+          ${POST_GRAPHQL_FIELDS_MINIMAL}
+        }
+      }
+    }`
+  );
+  return extractPostEntries(entries);
+}
+
+export async function getPropertiesByState(stateUrl: string | undefined, limit: number | undefined) {
+
+  console.log("!limit", typeof limit);
+  if (typeof stateUrl !='string') {
+    return;
+  }
+
+  const entry = await fetchGraphQL(
+    `query {
+      propertiesCollection(where: { stateUrl: "${stateUrl}" }, preview: false, limit: ${limit ? limit : 10}) {
+        items {
+          ${POST_GRAPHQL_FIELDS}
+        }
+      }
+    }`
+  );
+  return extractPostEntries(entry);
+}
+
+export async function getPropertiesByCity(stateUrl: string | undefined, cityUrl: string | undefined, limit: number | undefined) {
+
+
+  if (typeof stateUrl !='string') {
+    return;
+  }
+
+  if (typeof cityUrl !='string') {
+    return;
+  }
+
+  const entry = await fetchGraphQL(
+    `query {
+      propertiesCollection(where: { stateUrl: "${stateUrl}", cityUrl: "${cityUrl}" }, preview: false, limit: ${limit ? limit : 10}) {
+        items {
+          ${POST_GRAPHQL_FIELDS}
+        }
+      }
+    }`
+  );
+  return extractPostEntries(entry);
 }
 
 export async function getProperty(stateUrl: string | undefined, cityUrl: string | undefined, propertyUrl: string | undefined) {
