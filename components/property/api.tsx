@@ -130,6 +130,7 @@ export async function getAllPropertiesByState(){
 
 export async function getAllPropertiesByCity(){
 
+  console.log("!getAllPropertiesByCity");
   const entries = await fetchGraphQL(
     `query {
       propertiesCollection(where: { stateUrl_exists: true, cityUrl_exists: true }, order: name_DESC) {
@@ -144,7 +145,7 @@ export async function getAllPropertiesByCity(){
 
 export async function getPropertiesByState(stateUrl: string | undefined, limit: number | undefined) {
 
-  console.log("!limit", typeof limit);
+  
   if (typeof stateUrl !='string') {
     return;
   }
@@ -163,7 +164,7 @@ export async function getPropertiesByState(stateUrl: string | undefined, limit: 
 
 export async function getPropertiesByCity(stateUrl: string | undefined, cityUrl: string | undefined, limit: number | undefined) {
 
-
+  console.log("!getPropertiesByCity");
   if (typeof stateUrl !='string') {
     return;
   }
@@ -198,7 +199,7 @@ export async function getProperty(stateUrl: string | undefined, cityUrl: string 
     return;
   }
 
-  console.log('we have a propertyUrl:', propertyUrl);
+  console.log('We have a propertyUrl:', propertyUrl);
   const entry = await fetchGraphQL(
     `query {
       propertiesCollection(where: { stateUrl: "${stateUrl}", cityUrl: "${cityUrl}" , propertyUrl: "${propertyUrl}" }, preview: false, limit: 1) {

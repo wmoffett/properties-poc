@@ -55,6 +55,7 @@ export const getStaticProps: GetStaticProps<
   PropertyParams
 > = async (context) => {
 
+  console.log("!getStaticProps", pagePath);
   const stateUrl = context.params?.stateUrl;
   const cityUrl = context.params?.cityUrl;
   const propertyUrl = context.params?.propertyUrl;
@@ -105,6 +106,8 @@ const PropertyPage: NextPage<PropertyPageProps> = ({
   cityUrl,
   propertyUrl,
 }) => {
+
+  console.log("PropertyPage");
   return (
     <ChakraProvider theme={theme}>
       <PlasmicRootProvider

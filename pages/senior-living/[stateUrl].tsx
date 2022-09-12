@@ -29,7 +29,7 @@ export const getStaticPaths: GetStaticPaths<StateParams> = async () => {
   const states: State[] = (
     await getAllPropertiesByState()
   );
-
+  
   return {
     paths: states.map((p) => ({
       params: { 
@@ -47,14 +47,22 @@ export const getStaticProps: GetStaticProps<
   StateParams
 > = async (context) => {
 
+
+  
   const stateUrl = context.params?.stateUrl;
+
+
+  const url = "/senior-living/" + stateUrl;
+
+
+  console.log('url', url);
 
   if (!stateUrl) {
     throw new Error("Missing state Url");
   }
 
   const plasmicData = await PLASMIC.fetchComponentData(pagePath);
-
+  
   const queryCache = await extractPlasmicQueryData(
     <ChakraProvider theme={theme}>
       <PlasmicRootProvider 
@@ -67,6 +75,11 @@ export const getStaticProps: GetStaticProps<
             propertyByStateFetcher:{
               props: {
                 stateUrl: stateUrl
+              }
+            },
+            contentFetcher:{
+              props: {
+                url: url
               }
             }
           }}
@@ -83,6 +96,9 @@ const CityPage: NextPage<StatePageProps> = ({
   queryCache,
   stateUrl
 }) => {
+
+  const url = "/senior-living/" + stateUrl;
+  console.log('url', url);
   return (
     <ChakraProvider theme={theme}>
       <PlasmicRootProvider
@@ -96,6 +112,11 @@ const CityPage: NextPage<StatePageProps> = ({
             propertyByStateFetcher:{
               props: {
                 stateUrl: stateUrl
+              }
+            },
+            contentFetcher:{
+              props: {
+                url: url
               }
             }
           }}

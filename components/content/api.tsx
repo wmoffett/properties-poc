@@ -10,6 +10,12 @@ title
 description
 metaDescription
 keywords
+city
+cityUrl
+state
+stateUrl
+rollupType
+rollupTypeUrl
 content {
   json
   links {
@@ -83,14 +89,11 @@ export async function getAllContent(){
 
 export async function getContent(url: string | undefined) {
 
-
-  
-
   if (typeof url !='string') {
     return;
   }
 
-  console.log('we have a Content Url:', url);
+  console.log('!getContent: We have a Content Url:', url);
 
 
   const entry = await fetchGraphQL(

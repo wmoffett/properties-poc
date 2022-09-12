@@ -58,6 +58,8 @@ export const getStaticProps: GetStaticProps<
 
   const url = "/senior-living/" + stateUrl + "/" + cityUrl
 
+
+  console.log('url', url);
   if (!stateUrl) {
     throw new Error("Missing state Url");
   }
@@ -65,10 +67,6 @@ export const getStaticProps: GetStaticProps<
   if (!cityUrl) {
     throw new Error("Missing city Url");
   }
-
-  // if (!url) {
-  //   throw new Error("Missing property Url");
-  // }
 
   const plasmicData = await PLASMIC.fetchComponentData(pagePath);
 
@@ -110,7 +108,7 @@ const CityPage: NextPage<CityPageProps> = ({
 }) => {
 
   const url = "/senior-living/" + stateUrl + "/" + cityUrl
-
+console.log("URL", url);
   return (
     <ChakraProvider theme={theme}>
       <PlasmicRootProvider

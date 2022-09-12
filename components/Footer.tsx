@@ -144,18 +144,6 @@ export const FooterMeta: ComponentMeta<FooterProps> = {
   providesData: false
 };
 
-
-// const ReviewStars: React.FC<Props> = ({ rating, size = "6" }) => {
-//   export function StarsReview({
-//     rating,
-//     totalReviews,
-//     size
-//   }: {
-//     rating: number;
-//     totalReviews: number;
-//     size?: IconProps["boxSize"];
-//   }) {
-
 export function Footer({
   sections,
   aboutText
